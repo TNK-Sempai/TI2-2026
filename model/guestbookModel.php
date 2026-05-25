@@ -15,7 +15,7 @@
  * @param string $postcode
  * @param string $message
  * @return bool
- * Fonction qui insère un message dans la base de données 'ti2web2025' et sa table 'guestbook'
+ * Fonction qui insère un message dans la base de données 'ti2web2026' et sa table 'guestbook'
  * Renvoie true si l'insertion a réussi, false sinon
  * Une requête préparée est utilisée pour éviter les injections SQL
  * Les données sont échappées pour éviter les injections XSS (protection backend)
@@ -35,10 +35,9 @@ function addGuestbook(PDO $db,
     return false;
     // requête préparée obligatoire !
 
-    // try catch
-        // si l'insertion a réussi
-        // on renvoie true
-    // sinon, on fait un die de l'erreur
+    // si l'insertion a réussi
+    // on renvoie true
+    // sinon, on renvoie false
 
 }
 
@@ -51,7 +50,7 @@ function addGuestbook(PDO $db,
  * @param PDO $db
  * @return array
  * Fonction qui récupère tous les messages du livre d'or par ordre de date croissante
- * venant de la base de données 'ti2web2025' et de la table 'guestbook'
+ * venant de la base de données 'ti2web2026' et de la table 'guestbook'
  * Si pas de message, renvoie un tableau vide
  */
 function getAllGuestbook(PDO $db): array
@@ -61,7 +60,6 @@ function getAllGuestbook(PDO $db): array
     // bonne pratique, fermez le curseur
     // renvoyer le tableau de(s) message(s)
     return [];
-    // sinon, on fait un die de l'erreur
 }
 
 /**************************
@@ -76,41 +74,40 @@ function getAllGuestbook(PDO $db): array
  */
 function getNbTotalGuestbook(PDO $db): int
 {
-    // try catch
-    // si la requête a réussi,
+
     // bonne pratique, fermez le curseur,
     // renvoyez le nombre total de messages
     return 0;
-    // sinon, on fait un die de l'erreur
+
 }
 // SELECTION de messages dans le livre d'or par ordre de date croissante
 // en lien avec la pagination
 /**
  * @param PDO $db
- * @param int $offset
- * @param int $limit
+ * @param int $pageActu = 1
+ * @param int $limit = 5
  * @return array
  * Fonction qui récupère les messages du livre d'or par ordre de date croissante
- * venant de la base de données 'ti2web2025' et de la table 'guestbook'
+ * venant de la base de données 'ti2web2026' et de la table 'guestbook'
  * en utilisant une requête préparée (injection SQL), n'affiche que les messages
  * de la page courante
  */
-function getGuestbookPagination(PDO $db, int $offset, int $limit): array
+function getGuestbookPagination(PDO $db, int $pageActu=1, int $limit=5): array
 {
     // Requête préparée obligatoire !
     // Le $offset et le $limit sont des entiers, il faut donc les passer
     // en paramètres de la requête préparée en tant qu'entiers !
-    // try catch
     // si la requête a réussi,
     // bonne pratique, fermez le curseur
-    // renvoyer le tableau de(s) message(s)
+    // renvoyer le tableau de(s) message(s) (vide si pas de résultats)
     return [];
-    // sinon, on fait un die de l'erreur
 }
 
+# Pour afficher la pagination dans la vue
 // FONCTION de pagination
 /**
  * @param int $nbtotalMessage
+ * @param string $url
  * @param string $get
  * @param int $pageActu
  * @param int $perPage
@@ -118,7 +115,7 @@ function getGuestbookPagination(PDO $db, int $offset, int $limit): array
  * Fonction qui génère le code HTML de la pagination
  * si le nombre de pages est supérieur à une.
  */
-function pagination(int $nbtotalMessage, string $get="page", int $pageActu=1, int $perPage=5 ): string
+function pagination(int $nbtotalMessage, string $url="./?", string $get="page", int $pageActu=1, int $perPage=5 ): string
 {
     $sortie = "";
     if ($nbtotalMessage === 0) return "";
@@ -130,21 +127,21 @@ function pagination(int $nbtotalMessage, string $get="page", int $pageActu=1, in
             if ($pageActu === 1) {
                 $sortie .= "<< < 1 |";
             } elseif ($pageActu === 2) {
-                $sortie .= " <a href='./'><<</a> <a href='./'><</a> <a href='./'>1</a> |";
+                $sortie .= " <a href='$url'><<</a> <a href='$url'><</a> <a href='$url'>1</a> |";
             } else {
-                $sortie .= " <a href='./'><<</a> <a href='?$get=" . ($pageActu - 1) . "'><</a> <a href='./'>1</a> |";
+                $sortie .= " <a href='$url'><<</a> <a href='$url&$get=" . ($pageActu - 1) . "'><</a> <a href='$url'>1</a> |";
             }
         } elseif ($i < $nbPages) {
             if ($i === $pageActu) {
                 $sortie .= "  $i |";
             } else {
-                $sortie .= "  <a href='?$get=$i'>$i</a> |";
+                $sortie .= "  <a href='$url&$get=$i'>$i</a> |";
             }
         } else {
             if ($pageActu >= $nbPages) {
                 $sortie .= "  $nbPages > >>";
             } else {
-                $sortie .= "  <a href='?$get=$nbPages'>$nbPages</a> <a href='?$get=" . ($pageActu + 1) . "'>></a> <a href='?$get=$nbPages'>>></a>";
+                $sortie .= "  <a href='$url&$get=$nbPages'>$nbPages</a> <a href='$url&$get=" . ($pageActu + 1) . "'>></a> <a href='$url&$get=$nbPages'>>></a>";
             }
         }
     }
