@@ -135,8 +135,6 @@
    À RENDRE
    ============================================================================
 
-   - index.html
-   - style.css
    - script.js   (toute la logique jQuery)
    - traitement.php
 
