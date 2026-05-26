@@ -132,9 +132,9 @@ function getNbTotalGuestbook(PDO $db): int
  * en utilisant une requête préparée (injection SQL), n'affiche que les messages
  * de la page courante
  */
-function getGuestbookPagination(PDO $db, int $pageActu=1, int $limit=5): array
+function getGuestbookPagination(PDO $db, int $pageActu=1, int $limit=3): array
 {
-    $offset = ($page - 1) * PAGINATION_NB; 
+    $offset = ($pageActu - 1) * PAGINATION_NB; 
 
     try{
         $stmt = $db->prepare(
@@ -168,7 +168,7 @@ function getGuestbookPagination(PDO $db, int $pageActu=1, int $limit=5): array
  * Fonction qui génère le code HTML de la pagination
  * si le nombre de pages est supérieur à une.
  */
-function pagination(int $nbtotalMessage, string $url="./?", string $get="page", int $pageActu=1, int $perPage=5 ): string
+function pagination(int $nbtotalMessage, string $url="./?", string $get="pg", int $pageActu=1, int $perPage=3 ): string
 {
     $sortie = "";
     if ($nbtotalMessage === 0) return "";

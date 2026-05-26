@@ -39,6 +39,8 @@
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/projects.html" data-page="projects.html">Projets</a>
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/skills.html" data-page="skills.html">Skills</a>
         <a href="mailto:thecurioustanuki@gmail.com" class="nav-mobile-cta">Disponible →</a>
+        <button id="btnDark">🌙 Dark Mode</button>
+
     </div>
 
     <section class="gb-hero">
@@ -145,7 +147,7 @@
                             </div>
                             <div class="gb-msg-meta">
                                 <?= htmlspecialchars($entry['usermail']) ?> —
-                                <?= htmlspecialchars($entry['datemessage']) ?>
+                                <?= date('d/m/Y \à H\hi', strtotime($entry['datemessage'])) ?>
                             </div>
                             <p class="gb-msg-body"><?= htmlspecialchars($entry['message']) ?></p>
                         </div>
@@ -153,6 +155,19 @@
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+
+        <?php if ($nbPages > 1): ?>
+            <div class="pagination">
+                <?php for ($i = 1; $i <= $nbPages; $i++): ?>
+                    <a href="?<?= PAGINATION_GET ?>=<?= $i ?>"
+                    class="page-link <?= $i === $currentPage ? 'active' : '' ?>"
+                    >
+                    <?= $i ?> 
+                </a>
+                <?php endfor; ?>
+            </div>
+            <?php endif; ?>
+
     </section>
 
     <section class="gb-back">
