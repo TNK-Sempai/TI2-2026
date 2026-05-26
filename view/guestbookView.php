@@ -18,7 +18,7 @@
 
 
 </head>
-<body>
+<body class="dark">
    <div id="cur"></div>
     <div id="cur-ring"></div>
 
@@ -31,6 +31,7 @@
         </div>
         <a href="mailto:thecurioustanuki@gmail.com" class="nav-cta">Disponible →</a>
         <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span><span></span></button>
+        <button id="btnDark">🌙 Dark Mode</button>
     </nav>
     <div class="nav-mobile" id="navMobile">
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/index.html" data-page="index.html">Accueil</a>
@@ -92,16 +93,10 @@
                             <label for="lastname">Nom *</label>
                             <input type="text" id="lastname" name="lastname" maxlength="100" required placeholder="Votre nom">
                         </div>
-                    </div>
-
-                    <div class="form-row">
                         <div class="form-group">
                             <label for="usermail">E-mail *</label>
                             <input type="email" id="usermail" name="usermail" maxlength="200" required placeholder="prenom.nom@mail.com">
                         </div>
-                    </div>
-
-                    <div class="form-row form-row--half">
                         <div class="form-group">
                             <label for="postcode">C.postal *</label>
                             <input type="text" id="postcode" name="postcode" maxlength="4" required placeholder="1000">
@@ -111,14 +106,13 @@
                             <input type="tel" id="phone" name="phone" maxlength="10" required placeholder="0498150882">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label for="message">Message *</label>
                         <textarea id="message" name="message" rows="5" maxlength="300" required placeholder="Votre message..."></textarea>
                     </div>
 
                     <div class="form-footer">
-                        <p class="char-counter"><span id="char-count">0</span> / 300 caractères</p>
+                        <p class="char-counter">300 caractères maximum</p>
                         <button type="submit" class="btn-submit">Envoyer <span class="btn-arrow">→</span></button>
                     </div>
 
@@ -177,7 +171,6 @@
         </div>
     </footer>
 
-    <script src="js/validation.js"></script>
     <script src="js/main.js"></script>
     <script>
 
