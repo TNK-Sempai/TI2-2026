@@ -68,7 +68,7 @@
 
             <div class="gb-form-col">
                 <div class="label reveal"><span class="label-n">01 /</span> Nouveau message</div>
-                <h2 class="section-h reveal" style="font-size:2.2rem;margin-bottom:2rem">Laissez-nous<em> un mot.</em></h2>
+                <h2 class="section-h reveal" style="font-size:2.2rem;margin-bottom:2rem">Laissez-nous<em> un commentaire.</em></h2>
 
                 <?php if ($successMessage): ?>
                     <div class="msg msg--success reveal" id="js-feedback">
