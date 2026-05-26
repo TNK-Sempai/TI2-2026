@@ -125,7 +125,7 @@ function getNbTotalGuestbook(PDO $db): int
 /**
  * @param PDO $db
  * @param int $pageActu = 1
- * @param int $limit = 5
+ * @param int $limit = 3
  * @return array
  * Fonction qui récupère les messages du livre d'or par ordre de date croissante
  * venant de la base de données 'ti2web2026' et de la table 'guestbook'

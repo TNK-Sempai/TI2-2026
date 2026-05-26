@@ -160,8 +160,8 @@
             <div class="pagination">
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
                     <a href="?<?= PAGINATION_GET ?>=<?= $i ?>"
-                    class="page-link <?= $i === $currentPage ? 'active' : '' ?>"
-                    >
+                    class="page-link <?= $i === $pageActu ? 'active' : '' ?>"
+                >
                     <?= $i ?> 
                 </a>
                 <?php endfor; ?>
