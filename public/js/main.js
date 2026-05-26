@@ -31,5 +31,45 @@ document.addEventListener('DOMContentLoaded', function(){
             const phone = document.getElementById('phone').value.trim(); 
             const postcode = document.getElementById('postcode').value.trim(); 
             const message = document.getElementById('message').value.trim(); 
-        })
+        
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const postcodeRegex = /^\d{4}$/;
+            const phoneRegex = /^04\d{8}$/;
+        
+            if (!emailRegex.test(usermail)){
+                errors.push("L'adresse e-mail n'est pas valide (Ex : prenom.nom@mail.com).")
+            }
+
+            if (!postcodeRegex.test(postcode)){
+                errors.push("Le code postal doit contenir exactement 4 chiffres (ex : 1000).")
+            }
+
+            if (!phoneRegex.test(phone)){
+                errors.push("Le numéro de téléphone doit commencer par 04 et contenir 10 chiffres (ex : 0498150882).")
+            }
+
+            if (message.length === 0){
+                errors.push("Le message ne peut-être vide.")
+            } else if (message.length > MAX_CHARS){
+                errors.push("Le message ne doit pas dépasser " + MAX_CHARS + " caractères.")
+            }
+
+            const errorDiv = document.getElementById('js-errors');
+
+            if (errors.length > 0){
+                e.preventDefault();
+
+                errorDiv.innerHTML = errors.map(function (err){
+                    return '<p>' + err + '</p>'
+                }).join(''); 
+
+                errorDiv.style.display = 'block'; 
+
+                errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center'});  
+            } else {
+                errorDiv.style.display = 'none'; 
+                errorDiv.innerHTML = "";
+            }
+        });
     }
+});
