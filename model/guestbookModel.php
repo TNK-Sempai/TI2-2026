@@ -29,17 +29,47 @@ function addGuestbook(PDO $db,
                     string $message
 ): bool
 {
-    // traitement des données backend (SECURITE)
+   $firstname = htmlspecialchars(trim(strip_tags($firstname)));
+   if (empty($firstname) || strlen($firstname) > 100) return false;
 
-    // si pas de données complètes ou ne correspondant pas à nos attentes, on renvoie false
-    return false;
+   $lastname = htmlspecialchars(trim(strip_tags($lastname)));
+   if (empty($lastname) || strlen($lastname) > 100) return false;
+
+   $usermail = htmlspecialchars(trim(strip_tags($usermail)));
+   if (empty($usermail) || strlen($usermail) > 200) return false;
+
+   $phone = trim($phone);
+    if (!preg_match('/^04\d{8}$/', $phone) || strlen($phone) > 20) return false;
+
+    $postcode = trim($postcode);
+    if (!preg_match('/^\d{4}$/', $postcode)) return false;
+
+    $message = htmlspecialchars(trim(strip_tags($message)));
+    if (empty($message) || strlen($message) > 500) return false;
+    
+    
     // requête préparée obligatoire !
+try {
+        $stmt = $db->prepare(
+            "INSERT INTO `guestbook` (`firstname`, `lastname`, `usermail`, `phone`, `postcode`, `message`)
+             VALUES (:firstname, :lastname, :usermail, :phone, :postcode, :message)"
+        );
 
-    // si l'insertion a réussi
-    // on renvoie true
-    // sinon, on renvoie false
+        
+        $stmt->bindValue(':firstname', $firstname);
+        $stmt->bindValue(':lastname', $lastname);
+        $stmt->bindValue(':usermail', $usermail);
+        $stmt->bindValue(':phone', $phone);
+        $stmt->bindValue(':postcode', $postcode);
+        $stmt->bindValue(':message', $message);
 
-}
+        return $stmt-> execute(); 
+
+    } catch (Exception $e){
+        die("Erreur SQL AddGuestBook : " . $e->getMessage()); 
+    }
+    return false;
+  }   
 
 /***************************
  * Sans le Bonus Pagination
@@ -55,10 +85,14 @@ function addGuestbook(PDO $db,
  */
 function getAllGuestbook(PDO $db): array
 {
-    // try catch
-    // si la requête a réussi,
-    // bonne pratique, fermez le curseur
-    // renvoyer le tableau de(s) message(s)
+       try {
+        $stmt   = $db->query("SELECT * FROM `guestbook` ORDER BY `datemessage` DESC");
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $result;
+    } catch (Exception $e) {
+        die("Erreur SQL getAllGuestbook : " . $e->getMessage());
+    }
     return [];
 }
 
@@ -75,8 +109,14 @@ function getAllGuestbook(PDO $db): array
 function getNbTotalGuestbook(PDO $db): int
 {
 
-    // bonne pratique, fermez le curseur,
-    // renvoyez le nombre total de messages
+     try {
+        $stmt   = $db->query("SELECT COUNT(`id`) AS `nb` FROM `guestbook`");
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return (int) $result['nb'];
+    } catch (Exception $e) {
+        die("Erreur SQL getNbTotalGuestbook : " . $e->getMessage());
+    }
     return 0;
 
 }
@@ -94,12 +134,25 @@ function getNbTotalGuestbook(PDO $db): int
  */
 function getGuestbookPagination(PDO $db, int $pageActu=1, int $limit=5): array
 {
-    // Requête préparée obligatoire !
-    // Le $offset et le $limit sont des entiers, il faut donc les passer
-    // en paramètres de la requête préparée en tant qu'entiers !
-    // si la requête a réussi,
-    // bonne pratique, fermez le curseur
-    // renvoyer le tableau de(s) message(s) (vide si pas de résultats)
+    $offset = ($page - 1) * PAGINATION_NB; 
+
+    try{
+        $stmt = $db->prepare(
+           "SELECT * FROM `guestbook`
+             ORDER BY `datemessage` DESC
+             LIMIT :limit OFFSET :offset" 
+        );
+
+        $stmt->bindValue(':limit',  PAGINATION_NB, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset,       PDO::PARAM_INT);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $result;
+    } catch (Exception $e) {
+        die("Erreur SQL getGuestbookPagination : " . $e->getMessage());
+    }
     return [];
 }
 
