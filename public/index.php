@@ -22,23 +22,50 @@ require_once URL_BASE . "/model/guestbookModel.php";
  * le mode fetch à tableau associatif
  */
 
+try{
+    $db = new PDO(MARIA_DSN, DB_LOGIN, DB_PWD);
+} catch (Exception $e) {
+    die("Erreur de connexion à la base de donnée : " . $e->getMessage());
+}
+
+$successMessage = false; 
+$errorMessage = false; 
+
 /*
  * Si le formulaire a été soumis
  */
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST'
+    && isset(
+        $_POST['firstname'], 
+        $_POST['lastname'], 
+        $_POST['usermail'], 
+        $_POST['phone'], 
+        $_POST['postcode'], 
+        $_POST['message']
+    )
+) 
 // on appelle la fonction d'insertion dans la DB (addGuestbook())
+{
+    $insert = addGuestbook(
+        $db, 
+        $_POST['firstname'], 
+        $_POST['lastname'], 
+        $_POST['usermail'], 
+        $_POST['phone'], 
+        $_POST['postcode'], 
+        $_POST['message'] 
+    );
 
-// si l'insertion a réussi
+    if ($insert){
+        $successMessage = true; 
+    } else {
+        $errorMessage = true; 
+    }
+}
 
-// on redirige vers la page actuelle (ou on affiche un message de succès)
-
-// sinon, on affiche un message d'erreur
-
-/*
- * On récupère les messages du livre d'or
- */
-
-// on appelle la fonction de récupération de la DB (getAllGuestbook())
+$entries = getAllGuestbook($db);
+$nbEntries = getNbTotalGuestbook($db); 
 
 /*********************
  * Ou Bonus Pagination
