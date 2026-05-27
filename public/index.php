@@ -64,29 +64,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
     }
 }
 
+
 $entries = getAllGuestbook($db);
 $nbEntries = getNbTotalGuestbook($db); 
 
-/*********************
- * Ou Bonus Pagination
- *********************/
+$pageActu = (isset($_GET[PAGINATION_GET]) && ctype_digit($_GET[PAGINATION_GET]))
+    ? (int) $_GET[PAGINATION_GET]
+    : 1;
 
-// on vérifie sur quelle page on est (et que c'est un string qui contient que des numériques sans "." ni "-" => ctype_digit) en utilisant la variable $_GET et les constantes de config.php
+if ($pageActu < 1) $pageActu = 1;
 
-# on compte le nombre total de messages (SQL)
+// Nombre total de messages (pour calculer le nb de pages)
+$nbEntries = getNbTotalGuestbook($db);
 
-# on récupère la pagination
+// Nombre de pages total
+$nbPages = ($nbEntries > 0) ? (int) ceil($nbEntries / PAGINATION_NB) : 1;
 
-# pour obtenir le $offset pour les messages (calcul)
+// Sécurité : si la page demandée dépasse le max
+if ($pageActu > $nbPages) $pageActu = $nbPages;
 
-# on veut récupérer les messages de la page courante
+// Messages de la page courante uniquement
+$entries = getGuestbookPagination($db, $pageActu);
 
-/**************************
- * Fin du Bonus Pagination
- **************************/
 
 // Appel de la vue
 
 include URL_BASE . "/view/guestbookView.php";
 
 // fermeture de la connexion (bonne pratique)
+$db = null;

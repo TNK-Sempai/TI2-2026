@@ -39,7 +39,7 @@ function addGuestbook(PDO $db,
    if (empty($usermail) || strlen($usermail) > 200) return false;
 
    $phone = trim($phone);
-    if (!preg_match('/^04\d{8}$/', $phone) || strlen($phone) > 20) return false;
+    if (!preg_match('/^(\+32|0032|0)4\d{8}$/', $phone) || strlen($phone) > 20) return false;
 
     $postcode = trim($postcode);
     if (!preg_match('/^\d{4}$/', $postcode)) return false;
@@ -168,7 +168,7 @@ function getGuestbookPagination(PDO $db, int $pageActu=1, int $limit=3): array
  * Fonction qui génère le code HTML de la pagination
  * si le nombre de pages est supérieur à une.
  */
-function pagination(int $nbtotalMessage, string $url="./?", string $get="pg", int $pageActu=1, int $perPage=3 ): string
+function pagination(int $nbEntries, string $url="./?", string $get="pg", int $pageActu=1, int $perPage=3 ): string
 {
     $sortie = "";
     if ($nbtotalMessage === 0) return "";

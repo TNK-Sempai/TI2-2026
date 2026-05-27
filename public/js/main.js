@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (textarea && charCount) {
     textarea.addEventListener("input", function () {
-      const current = this.ariaValueMax.length;
+      const current = this.value.length;
       charCount.textContent = current;
 
       const counter = charCount.closest(".char-counter");
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const postcodeRegex = /^\d{4}$/;
-      const phoneRegex = /^04\d{8}$/;
+      const phoneRegex = /^(\+32|0032|0)4\d{8}$/;
 
       if (!emailRegex.test(usermail)) {
         errors.push(
@@ -80,13 +80,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-  //dark mode
-  $("#btnDark").click(function () {
+ $(".btn-dark-toggle").on("click", function () {
     $("body").toggleClass("dark");
+ 
     if ($("body").hasClass("dark")) {
-      $(this).text("☀️ Light Mode");
+      // On est en dark → le bouton propose de passer en light
+      $(".btn-dark-toggle").text("☀️ Light Mode");
     } else {
-      $(this).text("🌙 Dark Mode");
+      // On est en light → le bouton propose de passer en dark
+      $(".btn-dark-toggle").text("🌙 Dark Mode");
     }
   });
 });

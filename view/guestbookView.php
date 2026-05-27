@@ -105,16 +105,16 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Portable *</label>
-                            <input type="tel" id="phone" name="phone" maxlength="10" required placeholder="0498150882">
+                            <input type="tel" id="phone" name="phone" maxlength="20" required placeholder="0498150882">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="message">Message *</label>
-                        <textarea id="message" name="message" rows="5" maxlength="300" required placeholder="Votre message..."></textarea>
+                        <textarea id="message" name="message" rows="5" maxlength="500" required placeholder="Votre message..."></textarea>
                     </div>
 
                     <div class="form-footer">
-                        <p class="char-counter">300 caractères maximum</p>
+                        <p class="char-counter">500 caractères maximum</p>
                         <button type="submit" class="btn-submit">Envoyer <span class="btn-arrow">→</span></button>
                     </div>
 
@@ -160,13 +160,12 @@
             <div class="pagination">
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
                     <a href="?<?= PAGINATION_GET ?>=<?= $i ?>"
-                    class="page-link <?= $i === $pageActu ? 'active' : '' ?>"
-                >
-                    <?= $i ?> 
-                </a>
+                       class="page-link <?= $i === $pageActu ? 'active' : '' ?>">
+                        <?= $i ?>
+                    </a>
                 <?php endfor; ?>
             </div>
-            <?php endif; ?>
+        <?php endif; ?>
 
     </section>
 
