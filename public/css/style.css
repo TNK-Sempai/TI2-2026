@@ -32,9 +32,9 @@ body:not(.dark) {
   --text:       #111111;
   --muted:      #555555;
   --muted2:     #333333;
-  --accent:     #c8f060;
+  --accent:     #5e8302;
   --accent-dim: rgba(200, 240, 96, 0.2);
-  --success:    #16a34a;
+  --success:    #105529;
   --error:      #dc2626;
 }
 
@@ -331,7 +331,7 @@ section {
 
 .label-n {
   font-size: .6rem;
-  color: rgba(200, 240, 96, .4);
+  color: rgba(74, 100, 7, 0.815);
 }
 
 .section-h {

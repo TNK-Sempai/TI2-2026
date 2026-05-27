@@ -31,7 +31,7 @@
         </div>
         <a href="mailto:thecurioustanuki@gmail.com" class="nav-cta">Disponible →</a>
         <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span><span></span></button>
-        <button id="btnDark">🌙 Dark Mode</button>
+        <button class="btn-dark-toggle">☀️ Light Mode</button>
     </nav>
     <div class="nav-mobile" id="navMobile">
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/index.html" data-page="index.html">Accueil</a>
@@ -39,7 +39,7 @@
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/projects.html" data-page="projects.html">Projets</a>
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/skills.html" data-page="skills.html">Skills</a>
         <a href="mailto:thecurioustanuki@gmail.com" class="nav-mobile-cta">Disponible →</a>
-        <button id="btnDark">🌙 Dark Mode</button>
+        <button class="btn-dark-toggle">☀️ Light Mode</button>
 
     </div>
 
@@ -139,7 +139,7 @@
             <div class="gb-messages-grid">
                 <?php foreach ($entries as $i => $entry): ?>
                     <div class="gb-message-card reveal">
-                        <div class="gb-msg-idx"><?= str_pad($i + 1, 2, '0', STR_PAD_LEFT) ?></div>
+                        <div class="gb-msg-idx"><?= str_pad(($pageActu - 1) * PAGINATION_NB + $i + 1, 2, '0', STR_PAD_LEFT) ?></div>
                         <div class="gb-msg-content">
                             <div class="gb-msg-author">
                                 <?= htmlspecialchars($entry['firstname']) ?>
