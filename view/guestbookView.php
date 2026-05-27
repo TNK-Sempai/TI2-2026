@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js\jquery-3.7.1.min.js"></script>
 
 
 </head>
@@ -28,6 +28,7 @@
             <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/about.html" data-n="01" data-page="about.html">À propos</a>
             <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/projects.html" data-n="02" data-page="projects.html">Projets</a>
             <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/skills.html" data-n="03" data-page="skills.html">Skills</a>
+            <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/contact.html" data-n="04" data-page="contact.html">Contact</a>
         </div>
         <a href="mailto:thecurioustanuki@gmail.com" class="nav-cta">Disponible →</a>
         <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -38,6 +39,7 @@
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/about.html" data-page="about.html">À propos</a>
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/projects.html" data-page="projects.html">Projets</a>
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/skills.html" data-page="skills.html">Skills</a>
+        <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/contact.html" data-page="contact.html">Contact</a>
         <a href="mailto:thecurioustanuki@gmail.com" class="nav-mobile-cta">Disponible →</a>
         <button class="btn-dark-toggle">☀️ Light Mode</button>
 
@@ -53,9 +55,9 @@
         </div>
     </section>
 
+<div class="gb-main-layout">
     <section class="gb-form-section">
         <div class="gb-form-grid">
-
             <div class="gb-illus-col reveal">
                 <div class="gb-illus-box">
                     <img class="gb-illus" src="img/6171410.png" alt="Illustration inscription">
@@ -122,7 +124,6 @@
             </div>
         </div>
     </section>
-
     <section class="gb-messages-section">
         <div class="label reveal"><span class="label-n">02 /</span> Messages</div>
         <h2 class="section-h reveal">Les messages<em> précédents.</em></h2>
@@ -168,7 +169,7 @@
         <?php endif; ?>
 
     </section>
-
+</div>
     <section class="gb-back">
         <a href="https://2026.webdev-cf2m.be/Stagiaires/meidhy/portefolio/portfolio/projects.html" class="gb-back-link">← Retour aux projets</a>
     </section>
