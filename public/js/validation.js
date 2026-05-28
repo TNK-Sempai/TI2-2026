@@ -1,133 +1,134 @@
-/* ============================================================================
-   TRAVAIL D'INTÉGRATION JAVASCRIPT / jQuery
-   Gestion d'un formulaire de contact + Dark Mode
-   ============================================================================
+document.addEventListener("DOMContentLoaded", function () {
 
-   OBJECTIF GÉNÉRAL
-   ----------------
-   Créer une page contenant un formulaire de contact validé côté client en
-   jQuery, avec un système de bascule entre mode clair et mode sombre.
-   L'envoi final est géré par PHP qui affiche un message de retour.
+  let feedback = document.getElementById("js-feedback");
+  if (feedback) {
+    setTimeout(function () {
+      feedback.style.display = "none";
+      var url = new URL(window.location);
+      url.searchParams.delete("msg");
+      history.replaceState(null, "", url);
+    }, 3000);
+  }
 
-   ============================================================================
-   PARTIE 1 — STRUCTURE HTML À PRÉVOIR
-   ============================================================================
+  const textarea = document.getElementById("message");
+  const charCount = document.getElementById("char-count");
+  const MAX_CHARS = 500;
 
-   Vous devez créer un formulaire contenant AU MINIMUM les champs suivants :
+  if (textarea && charCount) {
+    textarea.addEventListener("input", function () {
+      const current = this.value.length;
+      charCount.textContent = current;
 
-     - Nom               (input text)
-     - Prénom            (input text)
-     - Email             (input email)
-     - Code postal belge (input text)
-     - Numéro de téléphone belge (input text)
-     - Message           (textarea)
-     - Bouton d'envoi    (button submit)
+      const counter = charCount.closest(".char-counter");
+      if (counter) {
+        if (MAX_CHARS - current < 50) {
+          counter.classList.add("--warning");
+        } else {
+          counter.classList.remove("--warning");
+        }
+      }
+    });
+  }
 
-   Prévoir également :
-     - Une zone <div id="messages"></div> en HAUT du formulaire pour afficher
-       les messages d'erreur (rouge) ou de succès (vert).
-     - Un bouton <button id="toggle-theme"></button> pour basculer le thème.
+  const form = document.getElementById("guestbook-form");
 
-   ============================================================================
-   PARTIE 2 — VALIDATION JAVASCRIPT (jQuery OBLIGATOIRE)
-   ============================================================================
+  if (form) {
+    const usermailInput = document.getElementById("usermail");
+    const phoneInput = document.getElementById("phone");
+    const postcodeInput = document.getElementById("postcode");
+    const messageInput = document.getElementById("message");
 
-   Au clic sur le bouton d'envoi, vérifier CHAQUE champ.
-   Si un champ ne respecte pas sa condition, afficher un message EN ROUGE
-   en haut du formulaire, dans la zone #messages.
-   Si TOUS les champs sont valides, afficher un message EN VERT et envoyer
-   le formulaire (qui sera traité par PHP — voir partie 3).
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const postcodeRegex = /^\d{4}$/;
+    const phoneRegex = /^(\+32|0032|0)4\d{8}$/;
 
-   --- RÈGLES DE VALIDATION ---
+    const bars = document.querySelectorAll(".v-bar");
+    const errorDiv = document.getElementById("js-errors");
 
-   1) Nom et Prénom
-      - Champs obligatoires (non vides)
-      - Au moins 2 caractères
+    function updateBars() {
+      let score = 0;
 
-   2) Email
-      - Champ obligatoire
-      - Doit respecter le format d'une adresse email valide
-        (utiliser une expression régulière — regex)
+      if (emailRegex.test(usermailInput.value.trim())) score++;
+      if (postcodeRegex.test(postcodeInput.value.trim())) score++;
+      if (phoneRegex.test(phoneInput.value.trim())) score++;
 
-   3) Code postal belge
-      - 4 chiffres exactement
-      - Compris entre 1000 et 9999
+      let msg = messageInput.value.trim();
+      if (msg.length > 0 && msg.length <= MAX_CHARS) score++;
 
-   4) Numéro de téléphone belge
-      - Doit accepter les formats suivants :
-          • 0470123456
-          • 0470 12 34 56
-          • +32 470 12 34 56
-          • 0032470123456
-      - Indice : nettoyer la chaîne (enlever espaces, tirets, points)
-        AVANT de tester avec une regex
+      bars.forEach(function (bar) {
+        bar.className = "v-bar";
+      });
 
-   5) Message
-      - Champ obligatoire
-      - Au moins 10 caractères
+      for (var i = 0; i < score; i++) {
+        if (score === 1) bars[i].classList.add("--red");
+        else if (score <= 3) bars[i].classList.add("--orange");
+        else bars[i].classList.add("--green");
+      }
+    }
 
-   --- AFFICHAGE DES MESSAGES ---
+    [usermailInput, phoneInput, postcodeInput, messageInput].forEach(function (input) {
+      input.addEventListener("input", updateBars);
+    });
 
-   - Tous les messages d'erreur s'affichent dans la zone #messages,
-     en haut du formulaire.
-   - Couleur rouge pour les erreurs, couleur verte pour le succès.
-   - Vider la zone à chaque nouvelle tentative d'envoi.
+    form.addEventListener("submit", function (e) {
+      let errors = [];
 
-   ============================================================================
-   PARTIE 3 — TRAITEMENT CÔTÉ PHP
-   ============================================================================
+      if (!emailRegex.test(usermailInput.value.trim())) {
+        errors.push(
+          "L'adresse e-mail n'est pas valide (Ex : prenom.nom@mail.com)."
+        );
+      }
 
-   Si tous les champs sont valides, le formulaire est envoyé à un script PHP.
-   Ce script doit afficher :
+      if (!postcodeRegex.test(postcodeInput.value.trim())) {
+        errors.push(
+          "Le code postal doit contenir exactement 4 chiffres (ex : 1000)."
+        );
+      }
 
-     - "Merci pour votre nouveau message" en VERT si l'envoi a réussi.
-     - "Problème lors de l'envoi du message" en ROUGE si l'envoi a échoué.
+      if (!phoneRegex.test(phoneInput.value.trim())) {
+        errors.push(
+          "Le numéro de téléphone doit commencer par 04 et contenir 10 chiffres (ex : 0498150882)."
+        );
+      }
 
-   Note : pour cet exercice, le PHP peut simuler la réussite/échec
-   (par exemple, vérifier que les variables $_POST sont bien remplies).
+      let msg = messageInput.value.trim();
+      if (msg.length === 0) {
+        errors.push("Le message ne peut être vide.");
+      } else if (msg.length > MAX_CHARS) {
+        errors.push(
+          "Le message ne doit pas dépasser " + MAX_CHARS + " caractères."
+        );
+      }
 
-   ============================================================================
-   PARTIE 4 — DARK MODE
-   ============================================================================
+      if (errors.length > 0) {
+        e.preventDefault();
 
-   
-   
+        errorDiv.innerHTML = errors
+          .map(function (err) {
+            return "<p>" + err + "</p>";
+          })
+          .join("");
 
+        errorDiv.className = "msg msg--error";
+        errorDiv.style.display = "block";
+        errorDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        errorDiv.innerHTML =
+          "<p>Toutes les informations sont valides ✅</p>";
+        errorDiv.className = "msg msg--success";
+        errorDiv.style.display = "block";
+      }
+    });
+  }
 
+  // Dark mode toggle (jQuery)
+  $(".btn-dark-toggle").on("click", function () {
+    $("body").toggleClass("dark");
 
-
-   ============================================================================
-   PARTIE 5 — BONUS
-   ============================================================================
-
-   Sur le champ "Message", limiter dynamiquement à 300 caractères MAXIMUM.
-
-   Suggestions :
-   - Utiliser l'attribut HTML maxlength="300" (rapide mais peu visuel)
-   - OU mieux : afficher un compteur en temps réel sous le champ,
-     du type "143 / 300 caractères", qui se met à jour à chaque frappe.
-   - Bonus du bonus : passer le compteur en rouge quand il approche
-     de la limite (par exemple à partir de 280 caractères).
-
-   ============================================================================
-   CRITÈRES D'ÉVALUATION
-   ============================================================================
-
-   - Utilisation correcte de jQuery (sélecteurs, événements, manipulation DOM)
-   - Validation rigoureuse de tous les champs avec les bonnes regex
-   - Affichage clair des messages d'erreur et de succès
-   - Dark mode fonctionnel avec changement dynamique du texte/icône
-   - Code propre, indenté et commenté
-   - HTML sémantique et CSS soigné
-   - Bonus implémenté (compteur de caractères)
-
-   ============================================================================
-   À RENDRE
-   ============================================================================
-
-   - script.js   (toute la logique jQuery)
-   - traitement.php
-
-   Bon travail !
-   ========================================================================= */
-
+    if ($("body").hasClass("dark")) {
+      $(".btn-dark-toggle").text("☀️ Light Mode");
+    } else {
+      $(".btn-dark-toggle").text("🌙 Dark Mode");
+    }
+  });
+});

@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js\jquery-3.7.1.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
 
 
 </head>
@@ -119,7 +119,12 @@
                         <p class="char-counter">500 caractères maximum</p>
                         <button type="submit" class="btn-submit">Envoyer <span class="btn-arrow">→</span></button>
                     </div>
-
+                <div class="validation-bars" id="validation-bars">
+                <span class="v-bar" id="vbar-1"></span>
+                <span class="v-bar" id="vbar-2"></span>
+                <span class="v-bar" id="vbar-3"></span>
+                <span class="v-bar" id="vbar-4"></span>
+</div>
                 </form>
             </div>
         </div>
@@ -186,7 +191,7 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="js/validation.js"></script>
     <script>
 
     const cur = document.getElementById('cur');

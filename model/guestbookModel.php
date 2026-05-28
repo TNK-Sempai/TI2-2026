@@ -35,8 +35,9 @@ function addGuestbook(PDO $db,
    $lastname = htmlspecialchars(trim(strip_tags($lastname)));
    if (empty($lastname) || strlen($lastname) > 100) return false;
 
-   $usermail = htmlspecialchars(trim(strip_tags($usermail)));
-   if (empty($usermail) || strlen($usermail) > 200) return false;
+   $usermail = trim(strip_tags($usermail));
+   if (empty($usermail) || strlen($usermail) > 200 || !filter_var($usermail, FILTER_VALIDATE_EMAIL)) return false;
+   $usermail = htmlspecialchars($usermail);
 
    $phone = trim($phone);
     if (!preg_match('/^(\+32|0032|0)4\d{8}$/', $phone) || strlen($phone) > 20) return false;
@@ -171,8 +172,8 @@ function getGuestbookPagination(PDO $db, int $pageActu=1, int $limit=3): array
 function pagination(int $nbEntries, string $url="./?", string $get="pg", int $pageActu=1, int $perPage=3 ): string
 {
     $sortie = "";
-    if ($nbtotalMessage === 0) return "";
-    $nbPages = ceil($nbtotalMessage / $perPage);
+    if ($nbEntries === 0) return "";
+    $nbPages = ceil($nbEntries / $perPage);
     if ($nbPages == 1) return "";
     $sortie .= "<p>";
     for ($i = 1; $i <= $nbPages; $i++) {
